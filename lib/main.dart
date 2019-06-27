@@ -1,4 +1,7 @@
+import 'package:comics_info/lang/ci_localizations.dart';
+import 'package:comics_info/lang/ci_localizations_delegate.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() => runApp(MyApp());
 
@@ -7,7 +10,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+
+      localizationsDelegates: [
+        const CiLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: [
+        const Locale('de', 'DE'),
+        const Locale('en', 'US'),
+      ],
+      onGenerateTitle: (ctx) => CiLocalizations.of(ctx).appTitle,
+      onGenerateRoute: _getCurrentRoute,
+
+      // title: 'Flutter Demo',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -21,6 +37,15 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+
+  MaterialPageRoute _getCurrentRoute(RouteSettings settings) {
+    return MaterialPageRoute(
+      builder: (ctx) => MyHomePage(
+        title: CiLocalizations.of(ctx).appTitle,
+        // other stuff like Provider or whatever your page needs
+      ),
     );
   }
 }
